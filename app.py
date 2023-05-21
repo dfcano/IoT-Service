@@ -4,6 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
 import os
 
+# this is a great comment!
 # create an instance of flask
 app = Flask(__name__)
 # creating an API object
