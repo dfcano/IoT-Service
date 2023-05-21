@@ -12,10 +12,11 @@ api = Api(app)
 # create database
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-#sqlalchemy mapper
+# sqlalchemy mapper
 db = SQLAlchemy(app)
 # Add Context
 app.app_context().push()
+
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key = True)
@@ -23,7 +24,7 @@ class User(db.Model):
     email = db.Column(db.String(100), unique=True)
     date_joined = db.Column(db.Date, default= datetime.utcnow)
 
-# add a class
+
 class Sensor(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(80), nullable=False)
@@ -34,6 +35,8 @@ class Sensor(db.Model):
         return f"{self.id} - {self.name} - {self.type} - {self.value}"
 
 # For GET request to http://localhost:5000/
+
+
 class GetSensor(Resource):
     def get(self):
         sensors = Sensor.query.all()
@@ -43,7 +46,9 @@ class GetSensor(Resource):
             emp_list.append(sen_data)
         return {"sensors": emp_list}, 200
 
-# For Post request to http://localhost:5000/employee
+# For Post request to http://localhost:5000/add
+
+
 class AddSensor(Resource):
     def post(self):
         if request.is_json:
@@ -58,6 +63,8 @@ class AddSensor(Resource):
             return {'error': 'Request must be JSON'}, 400
 
 # For put request to http://localhost:5000/update/?
+
+
 class UpdateSensor(Resource):
     def put(self, id):
         if request.is_json:
@@ -74,6 +81,8 @@ class UpdateSensor(Resource):
             return {'error': 'Request must be JSON'}, 400
 
 # For delete request to http://localhost:5000/delete/?
+
+
 class DeleteSensor(Resource):
     def delete(self, id):
         sen = Sensor.query.get(id)
@@ -83,10 +92,17 @@ class DeleteSensor(Resource):
         db.session.commit()
         return f'{id} is deleted', 200
 
+
+class GetHealth(Resource):
+    def get(self):
+        return {"status": 'UP'}, 200
+
+
 api.add_resource(GetSensor, '/')
 api.add_resource(AddSensor, '/add')
 api.add_resource(UpdateSensor, '/update/<int:id>')
 api.add_resource(DeleteSensor, '/delete/<int:id>')
+api.add_resource(GetHealth, '/health')
 
 if __name__ == '__main__':
     app.run(debug=True)
