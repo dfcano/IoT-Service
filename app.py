@@ -10,7 +10,7 @@ app = Flask(__name__)
 # creating an API object
 api = Api(app)
 # create database
-app.config['SECRET_KEY']='rnd_J0KdSHCYfewCs3vbocTfISnSNCpe'
+app.config['SECRET_KEY']='rnd_bjltc3TJgA9zKBPC7rY7HJsSw1MY'
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get("DATABASE_URL")
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 # sqlalchemy mapper
